@@ -1,0 +1,20 @@
+Extract fastq files that contain only reads with the sequence of interest. Tested on ubuntu 20.04.5 LTS
+
+Part I: This step involves the typical file naming convention of fastq files where we have an index file, read1 file, and a read2 file. Use UMI-tools to each sample you have into one file that contains read 1 and read 2.
+
+Use UMI-tools version 1.1.1 to combine read1 and read2 fastqs
+umi_tools extract --bc-pattern=CCCCCCCCCCCCCCCCNNNNNNNNNNNN --stdin YM-1-169-T1_S1_L001_R1_001.fastq.gz --stdout YM-1-169-T1_S1_L001_R1_001_extracted.fastq.gz --read2-in YM-1-169-T1_S1_L001_R2_001.fastq.gz --read2-out=YM-1-169-T1_S1_L001_R2_001_extracted.fastq.gz ***DO NOT USE THIS COMMAND RIGHT NOW
+
+
+umi_tools extract --bc-pattern=CCCCCCCCCCCCCCCCNNNNNNNNNNNN --stdin Lib-PCR-SC99-YM-1-169-T1-I1_S1_L001_R1_001.fastq.gz --stdout YM-1-169-T1-I1_S1_L001_R1_001_extracted.fastq.gz --read2-in Lib-PCR-SC99-YM-1-169-T1-I1_S1_L001_R2_001.fastq.gz --read2-out=YM-1-169-T1-I1_S1_L001_R2_001_extracted.fastq.gz ***CORRECT LINE TO USE FOR TARGETED BARCODES
+
+Unzip the resulting fastq.gz file for the following step.
+
+
+Part II: Select for all reads that fit the following pattern
+
+Grep Command:
+
+egrep -A 2 -B 1 'AT....CT....AC....TC....GT|TC....GTGCTGATACCGTTATT|TGGAGACTGCGTATGAT....CT' input.fastq -i > out.fastq
+
+THE out.fastq FILE IS THE FINAL PRODUCT THAT IS INPUT TO THE NEXT STEP OF THE PIPELINE
